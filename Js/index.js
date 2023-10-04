@@ -1,4 +1,4 @@
-const TAMAÑO_BLOQUE = 20;
+const TAMAÑO_BLOQUE = 30;
 const ANCHO = 10;
 const ALTO = 20;
 
