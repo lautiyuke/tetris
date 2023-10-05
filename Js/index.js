@@ -4,64 +4,78 @@ const ALTO = 20;
 
 const piezas = [
     {
+        id: 1,
         posision: {x: 8, y: 0},
         shape: [
             [1,1],
             [1,1],
-        ]
+        ],
+        color: "#0dc2ff"
     },
     {
+        id: 2,
         posision: {x: 0, y: 0},
         shape: [
             [1,0],
             [1,0],
             [1,1]
-        ]
+        ],
+        color: "#f538ff"
     },
     {
+        id: 3,
         posision: {x: 0, y: 0},
         shape: [
             [0,1,0],
             [1,1,1],
-        ]
+        ],
+        color: "#ff0d72"
     },
     {
+        id: 4,
         posision: {x: 0, y: 0},
         shape: [
             [0,1],
             [0,1],
             [1,1]
-        ]
+        ],
+        color: "#ff8e0d"
     },
     {
+        id: 5,
         posision: {x: 0, y: 0},
         shape: [
             [1],
             [1],
             [1],
             [1]
-        ]
+        ],
+        color: "#0dff72"
     },
     {
+        id: 6,
         posision: {x: 0, y: 0},
         shape: [
             [1,1,0],
             [0,1,1],
-        ]
+        ],
+        color: "#3877ff"
     },
     {
+        id: 7,
         posision: {x: 0, y: 0},
         shape: [
             [0,1,1],
             [1,1,0],
-        ]
+        ],
+        color: "#0dff72"
     }
 
 ];
 
 const canvas = document.getElementById("gameCanvas");
 const context = canvas.getContext("2d");
-const puntos = document.getElementById("puntos");
+const puntos = document.getElementsByClassName("puntos");
 let puntaje = 0;
 let tablero = [];
 let bajando = false;
@@ -100,8 +114,8 @@ function dibujar(){
     context.fillRect(0,0, canvas.width, canvas.height);
     tablero.forEach((row, y) => {
         row.forEach((value, x) => {
-            if (value === 1){
-                context.fillStyle = "#b8e3d2";
+            if (value != 0){
+                context.fillStyle = piezas[value - 1].color;
                 context.fillRect(x, y, 1, 1);
             }
         })
@@ -110,7 +124,7 @@ function dibujar(){
     pieza.shape.forEach((row, y) => {
         row.forEach((value, x) => {
             if (value === 1){
-                context.fillStyle = "red";
+                context.fillStyle = pieza.color;
                 context.fillRect(x + pieza.posision.x, y + pieza.posision.y, 1, 1);
             }
         })
@@ -132,7 +146,7 @@ function endurecer(){
     pieza.shape.forEach((row, y) => {
         row.forEach((value, x) => {
             if (value === 1){
-                tablero[y + pieza.posision.y][x + pieza.posision.x] = 1;
+                tablero[y + pieza.posision.y][x + pieza.posision.x] = pieza.id;
             }
         })
     })
@@ -140,12 +154,12 @@ function endurecer(){
 
 function eliminarFilas(){
     tablero.forEach((row, y) =>{
-        if (row.every((element) => element === 1)){
+        if (row.every((element) => element != 0)){
             tablero.splice(y, 1);
             const ceroArray = Array.apply(null, Array(ANCHO)).map(() => 0);
             tablero.unshift(ceroArray);
             puntaje += 100;
-            puntos.innerText = puntaje;
+            puntos.forEach(punto => {punto.innerText = puntaje;});
         }
     });
 }
