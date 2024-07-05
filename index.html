@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="Css/style.css">
-    <title>Tetris</title>
-</head>
-<body>
-    <div class="gameContainer" id="gameContainer">
-        <h1>Tetris</h1>
-        <canvas id="gameCanvas"></canvas>
-        <div class="bot">
-            <strong>Puntos: <span class="puntos">0</span></strong>
-            <strong class="creditos">Lautaro Yukelson</strong>
-        </div>
-    </div>
-    <div class="perdiste" id="perdiste">
-        <h1>Perdiste...</h1>
-        <strong>Puntos: <span class="puntos">0</span></strong>
-        <p>Click para volver a comenzar</p>
-    </div>
-    <script src="Js/index.js"></script>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="style.css" />
+		<title>Tetris</title>
+	</head>
+	<body>
+		<div class="gameContainer" id="gameContainer">
+			<h1 id="title">Tetris</h1>
+			<canvas id="gameCanvas"></canvas>
+			<div class="bot">
+				<strong>Puntos: <span class="puntos">0</span></strong>
+				<strong class="creditos">Lautaro Yukelson</strong>
+			</div>
+		</div>
+		<div class="perdiste" id="perdiste">
+			<h1>Perdiste...</h1>
+			<strong>Puntos: <span class="puntos">0</span></strong>
+			<p>Click para volver a comenzar</p>
+		</div>
+		<script src="script.js" type="module"></script>
+	</body>
 </html>

@@ -1,78 +1,17 @@
-const TAMAÑO_BLOQUE = 30;
+import piezas from './piezas.js';
+
+const TAMAÑO_BLOQUE = 40;
 const ANCHO = 10;
-const ALTO = 20;
-
-const piezas = [
-	{
-		id: 1,
-		posision: {x: 8, y: 0},
-		shape: [
-			[1, 1],
-			[1, 1],
-		],
-		color: "#0dc2ff",
-	},
-	{
-		id: 2,
-		posision: {x: 0, y: 0},
-		shape: [
-			[1, 0],
-			[1, 0],
-			[1, 1],
-		],
-		color: "#f538ff",
-	},
-	{
-		id: 3,
-		posision: {x: 0, y: 0},
-		shape: [
-			[0, 1, 0],
-			[1, 1, 1],
-		],
-		color: "#ff0d72",
-	},
-	{
-		id: 4,
-		posision: {x: 0, y: 0},
-		shape: [
-			[0, 1],
-			[0, 1],
-			[1, 1],
-		],
-		color: "#ff8e0d",
-	},
-	{
-		id: 5,
-		posision: {x: 0, y: 0},
-		shape: [[1], [1], [1], [1]],
-		color: "#0dff72",
-	},
-	{
-		id: 6,
-		posision: {x: 0, y: 0},
-		shape: [
-			[1, 1, 0],
-			[0, 1, 1],
-		],
-		color: "#3877ff",
-	},
-	{
-		id: 7,
-		posision: {x: 0, y: 0},
-		shape: [
-			[0, 1, 1],
-			[1, 1, 0],
-		],
-		color: "#0dff72",
-	},
-];
-
-const canvas = document.getElementById("gameCanvas");
-const context = canvas.getContext("2d");
-const puntos = document.getElementsByClassName("puntos");
+const ALTO = 15;
+const canvas = document.getElementById('gameCanvas');
+const context = canvas.getContext('2d');
+const puntos = document.getElementsByClassName('puntos');
 let puntaje = 0;
 let tablero = [];
 let bajando = false;
+let paused = false;
+let pieza;
+let interval;
 
 canvas.width = TAMAÑO_BLOQUE * ANCHO;
 canvas.height = TAMAÑO_BLOQUE * ALTO;
@@ -103,7 +42,7 @@ function actualizar(context) {
 }
 
 function dibujar() {
-	context.fillStyle = "black";
+	context.fillStyle = 'black';
 	context.fillRect(0, 0, canvas.width, canvas.height);
 	tablero.forEach((row, y) => {
 		row.forEach((value, x) => {
@@ -198,35 +137,59 @@ function DOWN() {
 	}
 }
 
-function perdiste() {
-	const gameContainer = document.getElementById("gameContainer");
-	gameContainer.style.display = "none";
+function pauseAndPlay() {
+	const title = document.getElementById('title');
+	paused = !paused;
+	if (paused) {
+		title.innerText = 'Tetris - (Pausa)';
+		clearInterval(interval);
+	} else {
+		title.innerText = 'Tetris';
+		interval = setInterval(DOWN, 1000);
+	}
+}
 
-	const perdiste = document.getElementById("perdiste");
-	perdiste.style.display = "flex";
-	perdiste.addEventListener("click", () => {
+function perdiste() {
+	const gameContainer = document.getElementById('gameContainer');
+	gameContainer.style.display = 'none';
+
+	const perdiste = document.getElementById('perdiste');
+	perdiste.style.display = 'flex';
+	perdiste.addEventListener('click', () => {
 		location.reload();
 	});
 }
 
-document.addEventListener("keydown", (event) => {
+function start() {
+	crearTablero();
+	proxPieza();
+	interval = setInterval(DOWN, 1000);
+	actualizar();
+}
+
+document.addEventListener('keydown', (event) => {
 	switch (event.keyCode) {
+		case 27:
+			pauseAndPlay();
+			break;
 		case 37:
-			LEFT();
+			if (!paused) LEFT();
 			break;
 		case 39:
-			RIGHT();
+			if (!paused) RIGHT(1);
 			break;
 		case 38:
-			UP();
+			if (!paused) UP();
 			break;
 		case 40:
-			DOWN();
+			if (!paused) DOWN();
 			break;
 		case 32:
-			bajando = true;
-			while (bajando) {
-				DOWN();
+			if (!paused) {
+				bajando = true;
+				while (bajando) {
+					DOWN();
+				}
 			}
 			break;
 		default:
@@ -234,7 +197,4 @@ document.addEventListener("keydown", (event) => {
 	}
 });
 
-crearTablero();
-let pieza = piezas[0];
-let interval = setInterval(DOWN, 1000);
-actualizar();
+start();
